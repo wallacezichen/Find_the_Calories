@@ -191,7 +191,7 @@ Below are the scatter plots which show the relationship in between response vari
 #### Scatter plot for `rating` and `calories`
 <iframe src="asset/fig4.html" width=600 height=400 frameBorder=0></iframe>
 
-##### From the above four graphs, we did not see any trend between four features and calories, so we decide to not to change these numeric columns.
+##### From the above four graphs, we did not see any trend between four features and calories, so we could not use log or square root to transform the data. Also, they are continuing numerics values, so we decided not to change these numeric columns in our baseline model. 
 
 #### Model Description
 
@@ -323,7 +323,7 @@ We could imprive the final model by using QuantileTransformer, PolynomialFeature
 Now we want to check if our model is fair.
 
 ---
-# Section 4 Fairness Analysis 🧐
+# Fairness Analysis 🧐
 
  Wally wonders about the question that Does our model perform worse for recipe groups that contain higher sugar(>= threshold grams) than it does for recipe groups that contain lower sugar(< threshold grams)? So they decide to investgate it. 
 
