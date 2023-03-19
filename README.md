@@ -161,9 +161,19 @@ Here is how dataset looks like after cleaning:
 | 412 broccoli casserole             | 306168 | ['60-minutes-or-less', 'time-to-make', 'course', 'main-ingredient', 'preparation', 'side-dishes', 'vegetables', 'easy', 'beginner-cook', 'broccoli']                                                                        |
 | 412 broccoli casserole             | 306168 | ['60-minutes-or-less', 'time-to-make', 'course', 'main-ingredient', 'preparation', 'side-dishes', 'vegetables', 'easy', 'beginner-cook', 'broccoli']                                                                        |
 | 412 broccoli casserole             | 306168 | ['60-minutes-or-less', 'time-to-make', 'course', 'main-ingredient', 'preparation', 'side-dishes', 'vegetables', 'easy', 'beginner-cook', 'broccoli']                                                                        |
+
 ###### Codes and Comments in Cleaning and EDA are copied from Zichen and Hyunsoo's project3
 
-##### Now we are done with cleaning the data!! Let's predict the Calories!!
+#### Drop the rows where rating is missing. 
+#### Clean `Calories` outliers and drop duplicated rows
+
+    res = res[~res['rating'].isna()]
+    res = res[res['calories'] < 10000]
+    res = res.drop_duplicates()
+
+
+
+#### Now we are done with cleaning the data!! Let's predict the Calories!!
 
 ---
 
