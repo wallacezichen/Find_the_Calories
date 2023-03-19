@@ -23,7 +23,7 @@ With the dataset given, they observed that there are `rating`, `s_fat`, `sugar`,
 Root Mean Squared Error is used over other suitable metrics, because the model is a regression model. Using metrics that measure the difference between the predicted and actual values of the target variable would be more appropriate. Accuracy metric would be useful when we use classfication models, however we are predicting continuous numeric values.
 
 ##### Brief Information of the dataset used.
-Our exploratory data analysis on this dataset can be found here:https://lionjhs98.github.io/exclamation-mark-shows-satisfaction/
+Our exploratory data analysis on this dataset can be found [here] (https://lionjhs98.github.io/exclamation-mark-shows-satisfaction/)
 
 Number of **Rows** in the Merged dataset of `Recipes` and `Interactions` is
 **234429**
@@ -365,6 +365,7 @@ Our model is unfair. Its precision of recipe groups that contain high sugar(>= 3
 
 ### Conclusion
     P-value(0.0) < 0.05
+
 With the information above, because the pvalue(0) < significance level(0.05), **we rejected** the null hypothesis, indicate that the distribution of recipe groups that contain high sugar(>= 36 grams) and recipe groups that contain high sugar(< 36 grams) are not **same**!
 
 Can we answer the question with the test results?
