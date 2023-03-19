@@ -191,7 +191,7 @@ Below are the scatter plots which show the relationship in between response vari
 #### Scatter plot for `rating` and `calories`
 <iframe src="asset/fig4.html" width=600 height=400 frameBorder=0></iframe>
 
-##### From the above four graph, we did not see any curve trend between four columns and calories, so we decide to not to change these numeric columns.
+##### From the above four graphs, we did not see any trend between four features and calories, so we decide to not to change these numeric columns.
 
 #### Model Description
 
@@ -345,16 +345,24 @@ Then we are ready to perform permutation test to investigate this question.
 Our model is fair. Its precision for the recipe groups that contain high sugar(>= 36 grams) and recipe groups that contain high sugar(< 36 grams) are roughly the **same**, and any differences are due to random chance.
 #### Alternative Hypothesis: 
 Our model is unfair. Its precision of recipe groups that contain high sugar(>= 36 grams) and the precision of recipe groups that contain high sugar(< 36 grams) is **different**
-#### Group X: the recipe groups that contain high sugar(>= 36 grams)
-#### Group Y: the recipe groups that contain low sugar(< 36 grams)
-#### Evaluation Metric: Absolute Difference of RMSE between Group X and Group Y
+
+    Group X : The recipe groups that contain high sugar(>= 36 grams)
+    Group Y: The recipe groups that contain low sugar(< 36 grams)
+    Evaluation Metric: Absolute Difference of RMSE between Group X and Group Y
+
 #### Test Statistics(Absolute Difference of RMSE)
 
     118.74243857032002 
 
 
-#### P-Value : 0.0
-#### Significance level: 0.05
+#### P-Value
+    
+    0.0
+
+#### Significance level
+    
+    0.05
+
 ### Conclusion
     P-value(0.0) < 0.05
 With the information above, because the pvalue(0) < significance level(0.05), **we rejected** the null hypothesis, indicate that the distribution of recipe groups that contain high sugar(>= 36 grams) and recipe groups that contain high sugar(< 36 grams) are not **same**!
