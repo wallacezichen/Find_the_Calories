@@ -1,7 +1,5 @@
 # Find_the_Calories!!
 
-a machine learning project
-
 ## Can we predict Calories without primary nutritions(fat, carb, and protein)?
 
 ## Framing the Problem
@@ -25,6 +23,7 @@ With the dataset given, they observed that there are `rating`, `s_fat`, `sugar`,
 Root Mean Squared Error is used over other suitable metrics, because the model is a regression model. Using metrics that measure the difference between the predicted and actual values of the target variable would be more appropriate. Accuracy metric would be useful when we use classfication models, however we are predicting continuous numeric values.
 
 ##### Brief Information of the dataset used.
+Our exploratory data analysis on this dataset can be found here:https://lionjhs98.github.io/exclamation-mark-shows-satisfaction/
 
 Number of **Rows** in the Merged dataset of `Recipes` and `Interactions` is
 **234429**
