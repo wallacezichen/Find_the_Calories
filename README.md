@@ -229,16 +229,16 @@ So, we splited our dataset into training and testing.
     baseline_X_train, baseline_X_test, baseline_y_train, baseline_y_test = train_test_split(baseline_X, baseline_y, test_size=0.2, random_state=1)
 
 The results are followings:
-    **train set RMSE score : 244.85**
-    **test set RMSE score : 261.55**
+    **train set RMSE score : 246.07**
+    **test set RMSE score : 245.75**
 
 The RMSE scores are high, but there is no extreme difference in between the train set's RMSE and the test set's RMSE. We concluded it does not seem like our model is overfitting to the train data. Our model is able to generalize well.
 
 ##### Baseline Model Analysis
 
-**RMSE Score: 245.98**
+**RMSE Score: 245.75**
 
-RMSE score close to zero indicates that the model is accurate in predicting values. However, our baseline model shows **245.98** as a RMSE score which is **not good** RMSE score. It is critically higher than 0 which is an ideal score. So, we concluded that we need to improve the model and input data we have.
+RMSE score close to zero indicates that the model is accurate in predicting values. However, our baseline model shows **245.75** as a RMSE score which is **not good** RMSE score. It is critically higher than 0 which is an ideal score. So, we concluded that we need to improve the model and input data we have.
 
 ---
 
@@ -298,7 +298,7 @@ However, the model created by the GridSearchCV and DecisionTreeRegressor had a c
 Followings are the results we got for each data set:
 
     Training Data's RMSE : 28.14440356736906
-    Testing Data's RMSE  : 130.94614978314289
+    Testing Data's RMSE  : 132.86370549396088
 
 As we see, there are unignorable difference in RMSE score in between Training Data and Testing Data.
 
@@ -314,8 +314,8 @@ So, we splited the data just like how we did in the Baseline model to check the 
 
 Followings are the results: 
 
-    Training Data's RMSE : 226.730711098181
-    Testing Data's RMSE  : 228.29595970522894
+    Training Data's RMSE : 226.7658222939278
+    Testing Data's RMSE  : 228.3315816038959
 
 The training data's RMSE score and testing data's RMSE score has not critical difference. They are similar, so it does not seem like the model is overfitting to the training data. The model is able to generalize well.
 
@@ -323,10 +323,10 @@ The training data's RMSE score and testing data's RMSE score has not critical di
 
 Final Model Performance RMSE Score
 
-                            227.02
+    228.3315816038959
 
 
-Our baseline model RMSE score was **245.98** and our final model RMSE score is **227.02**. There is a  **18.96** unit improvement in the model. 
+Our baseline model RMSE score was **245.75** and our final model RMSE score is **228.33**. There is a  **17.42** unit improvement in the model. 
 
 We could imprive the final model by using QuantileTransformer, PolynomialFeatures with hyperparameter 3, and K-Fold Cross Validation.
 
@@ -362,7 +362,7 @@ Our model is unfair. Its precision of recipe groups that contain high sugar(>= 3
 
 #### Test Statistics(Absolute Difference of RMSE)
 
-    118.74243857032002 
+    118.74275614775925
 
 
 #### P-Value
