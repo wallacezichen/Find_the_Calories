@@ -253,20 +253,38 @@ RMSE score close to zero indicates that the model is accurate in predicting valu
 - We applied `QuantileTransformer()` on the data `sodium` and `sugar`.
 The reason why we applied the quantile transformer is that, for some recipes such as "christmas ham" they use about 4,000 grams of sodium. For both, data sets `sodium` and `sugar` there are outliers which recipes contain amount over 1000 grams. Those could be the outliers which can harm our regression. But, those are still reasonable data, we should not delete them. So, in order to lower the impact of outliers in our dataset we tansformed `sodium` and `sugar`. 
 
-##### 2. PolynomialFeatures
-
-- When we look at the graph **Scatter plot for `s_fat` and `calories`**, there are alot of non-linear datas along with linear datas. So, we thought that using PloynomialFeatures transfomer for `s_fat` would better fit the model. In order to find the best hyperparameters for PolynomialFeatures transformer, we tried multiple degrees(1 ~ 5). Having degree of **3** improved the model the most.  
-
-##### 3. K-Fold Cross Validation
+##### 2. 5-Fold Cross Validation
 
 - We do not have enough dataset is be a problem, so we decided to add on new features. Multiplying the quantative values could provide improvements in predcition, because some combinations of nutrition could be related to calories. For example, high calories can be predicted when there are large amount of sodium and saturated fat. 10 new features such as 'sugar * rating', 'sugar * sodium', etc were created. 
 
-- However, adding all the combinatorial features could cause issues. Some information could be redundant or irrelevant. So we created combinations of two features and add them on the original dataset we used in baseline model.
-For example, first model add the columns added `sugar * rating` and `sugar * sodium` and the second model would contain `sugar * rating`, `sugar * rating` as so on.
+- However, adding all the combinatorial features could cause issues. Some information could be redundant or irrelevant. So we created combinations of two features and polynomailFeature and add them on the original dataset we used in baseline model.
+For example, here is the first few columns in our k-fold dataframe
+
+    ('sugar * sodium', 'sugar * s_fat', 1),
+
+    ('sugar * sodium', 'sugar * s_fat', 2),
+
+    ('sugar * sodium', 'sugar * s_fat', 3),
+
+    ('sugar * sodium', 'sugar * s_fat', 4),
+
+    ('sugar * sodium', 'sugar * rating', 1),
+
+    ...
+
+    ('sodium * rating', 's_fat * rating', 4)
+
+We will use add these new columns based on our baseline dataframe and using PolynomialFeatures(d) where d is the choice of number of polynomal features.
+
 
 - To decide  which features combination would actually improve our model, we decided to use K-Fold Cross Validation. The reason why we chose K-Fold Cross Validation is firstly to check the whether or not the model have underfitting or overfitting issue(refer to "Unsuccessful Exploration" section below). Secondly, for each hyperparameter choice, we use the validation test set to evaluate our model and making comparsion to decide which hyperparameter choice minimize our **RMSE** score. 
 
-- We used 5 folds for cross validation model and got average **RMSE** scores for each Hyperparameter choice. The model with new features of combinations of `sugar * rating` and `sodium * s_fat` showed the lowest RMSE score with the model based on the validation set.
+- We used 5 folds for cross validation model and got average **RMSE** scores for each Hyperparameter choice. The model with new features of combinations of `sugar * rating` and `sodium * s_fat` and polynomialFeatures is **3** showed the lowest RMSE score with the model based on the validation set.
+
+##### 3. PolynomialFeatures
+
+- When we look at the graph **Scatter plot for `s_fat`**, there are a lot of non-linear datas along with linear datas. So, we thought that using PolynomialFeatures transfomer for `s_fat` would better fit the model. In order to find the best hyperparameters for PolynomialFeatures transformer, we tried multiple degrees(1 ~ 5). Based on the result from other 5 fold-cross validation, having degree of **3** improved the model the most.  
+
 
 #### Final Model Description
 
@@ -275,12 +293,12 @@ The final model is built and improved based on the **Successful Exploration**.
 In the baseline model, we thought transforming the quantative datas are not necessary which resulted in bad RMSE score. In order to improve the model, we used **QuantileTransformer** on `sodium` and `sugar` data to generalize outlier datas. (Details in Successful Exploration: 1. QuantileTransformer)
 
 The `s_fat` data had non-linear relationship with `calories`, so we used **PolynomialFeatures** to make data more fit. We tested multiple degrees to find the best hyperparameter and **Degree 3** returned the lowest RMSE score for the model. 
-(Details in Successful Exploration: 2. PolynomialFeatures)
+(Details in Successful Exploration: 3. PolynomialFeatures)
 
 Above two tranformers are included in our preprocessor.
 Then, we used **LinearRegression** with the preprocessor created above.
 
-In order to discover overfitting or underfitting issues and find the best hyperparamter choice to add into model, we used K-Fold Cross Validation. (Details in Successful Exploration: 3. K-Fold Cross Validation)
+In order to discover overfitting or underfitting issues and find the best choice for hyperparamter and PolynomialFeature degree to add into model, we used 5-Fold Cross Validation. (Details in Successful Exploration: 3. 5-Fold Cross Validation)
 
 
 #### Unsuccessful Exploration
@@ -289,7 +307,7 @@ In order to discover overfitting or underfitting issues and find the best hyperp
 
 Grid Search Cross Validation was used to improve the model at first. By default GridSearchCV has classifier score as a standard of choosing the best parameter. However we are using regressor instead of classfier, so we customized the score measurement to **RMSE** to figure out the best new features and hyperparameter. Also, we used DecisionTreeRegressor instead of LinearRegression for the GridSearch.
 
-Just like how we added the combination of new features in **3. K-Fold Cross Validation**, we tried the same process with GridSearchCV. We created the combinations of two features each and created the new model for each combination.
+Just like how we added the combination of new features in **3. 5-Fold Cross Validation**, we tried the same process with GridSearchCV. We created the combinations of two features each and created the new model for each combination.
 
 The GridSearch Cross Validation has returned that adding a combination of features of **'sugar * s_fat' & 'sodium * rating'** to the model would give the lowest RMSE score. 
 
@@ -328,7 +346,7 @@ Final Model Performance RMSE Score
 
 Our baseline model RMSE score was **245.75** and our final model RMSE score is **228.33**. There is a  **17.42** unit improvement in the model. 
 
-We could imprive the final model by using QuantileTransformer, PolynomialFeatures with hyperparameter 3, and K-Fold Cross Validation.
+We could improve the final model by using QuantileTransformer, PolynomialFeatures with degree 3, and 5-Fold Cross Validation.
 
 Now we want to check if our model is fair.
 
