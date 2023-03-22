@@ -259,14 +259,14 @@ The reason why we applied the quantile transformer is that, for some recipes suc
 
 ##### 3. K-Fold Cross Validation
 
-- We thought that we do not have enough dataset could be a problem, so we decided to add on new features. Multiplying the quantative values could provide improvements in predcition, because some combinations of nutrition could be related to calories. For example, high calories can be predicted when there are large amount of sodium and saturated fat. 10 new features such as 'sugar * rating', 'sugar * sodium', etc were created. 
+- We do not have enough dataset is be a problem, so we decided to add on new features. Multiplying the quantative values could provide improvements in predcition, because some combinations of nutrition could be related to calories. For example, high calories can be predicted when there are large amount of sodium and saturated fat. 10 new features such as 'sugar * rating', 'sugar * sodium', etc were created. 
 
 - However, adding all the combinatorial features could cause issues. Some information could be redundant or irrelevant. So we created combinations of two features and add them on the original dataset we used in baseline model.
 For example, first model add the columns added `sugar * rating` and `sugar * sodium` and the second model would contain `sugar * rating`, `sugar * rating` as so on.
 
-- To decide the which combination of features would actually improve our model, we decided to use K-Fold Cross Validation. The reason why we chose K-Fold Cross Validation is that we have observed many overfitting issue when we were exploring various methods to improve the model(refer to "Unsuccessful Exploration" section below). 
+- To decide  which features combination would actually improve our model, we decided to use K-Fold Cross Validation. The reason why we chose K-Fold Cross Validation is firstly to check the whether or not the model have underfitting or overfitting issue(refer to "Unsuccessful Exploration" section below). Secondly, for each hyperparameter choice, we use the validation test set to evaluate our model and making comparsion to decide which hyperparameter choice minimize our **RMSE** score. 
 
-- We used 5 folds for cross validation model and got average **RMSE** scores for each data combinations. The model with new features of combinations of `sugar * rating` and `sodium * s_fat` showed the lowest RMSE score with the model. 
+- We used 5 folds for cross validation model and got average **RMSE** scores for each Hyperparameter choice. The model with new features of combinations of `sugar * rating` and `sodium * s_fat` showed the lowest RMSE score with the model based on the validation set.
 
 #### Final Model Description
 
@@ -280,7 +280,7 @@ The `s_fat` data had non-linear relationship with `calories`, so we used **Polyn
 Above two tranformers are included in our preprocessor.
 Then, we used **LinearRegression** with the preprocessor created above.
 
-In order to prevent overfitting issues and find the best features to add into model, we used K-Fold Cross Validation. (Details in Successful Exploration: 3. K-Fold Cross Validation)
+In order to discover overfitting or underfitting issues and find the best hyperparamter choice to add into model, we used K-Fold Cross Validation. (Details in Successful Exploration: 3. K-Fold Cross Validation)
 
 
 #### Unsuccessful Exploration
