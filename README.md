@@ -23,6 +23,7 @@ With the dataset given, they observed that there are `rating`, `s_fat`, `sugar`,
 Root Mean Squared Error is used over other suitable metrics, because the model is a regression model. Using metrics that measure the difference between the predicted and actual values of the target variable would be more appropriate. Accuracy metric would be useful when we use classfication models, however we are predicting continuous numeric values.
 
 ##### Brief Information of the dataset used.
+
 Our exploratory data analysis on this dataset can be found [here](https://lionjhs98.github.io/exclamation-mark-shows-satisfaction/)
 
 Number of **Rows** in the Merged dataset of `Recipes` and `Interactions` is
@@ -30,7 +31,7 @@ Number of **Rows** in the Merged dataset of `Recipes` and `Interactions` is
 
 Columns Explanation for Data Prediction.
 
-`calories` : The column shows the kilocalories for each recipe. 
+`calories` : The column shows the kilocalories for each recipe.
 
 `s_fat` : The column shows the amount of s_fat in grams for each recipe.
 
@@ -59,7 +60,6 @@ Zichen and Hyunsoo realized that `Interactions` dataset contains information for
 
     merged_df = pd.merge(recipes,interactions,left_on = 'id',
                      right_on = 'recipe_id',how = 'left')
-
 
 #### Because there is "\n" in the `review` and `description`, the dataframe in the markdown is ruined, so we need to get rid of them.
 
@@ -164,14 +164,13 @@ Here is how dataset looks like after cleaning:
 
 ###### Codes and Comments in Cleaning and EDA are copied from Zichen and Hyunsoo's project3
 
-#### Drop the rows where rating is missing. 
+#### Drop the rows where rating is missing.
+
 #### Clean `Calories` outliers and drop duplicated rows
 
     res = res[~res['rating'].isna()]
     res = res[res['calories'] < 10000]
     res = res.drop_duplicates()
-
-
 
 #### Now we are done with cleaning the data!! Let's predict the Calories!!
 
@@ -190,18 +189,22 @@ This RMSE function is used in both Baseline and Final models.
 Below are the scatter plots which show the relationship in between response variable `calories` and `sugar`, `s_fat`, `sodium`, and `rating`.
 
 #### Scatter plot for `sugar` and `calories`
+
 <iframe src="asset/fig1.html" width=600 height=400 frameBorder=0></iframe>
 
 #### Scatter plot for `s_fat` and `calories`
+
 <iframe src="asset/fig2.html" width=600 height=400 frameBorder=0></iframe>
 
 #### Scatter plot for `sodium` and `calories`
+
 <iframe src="asset/fig3.html" width=600 height=400 frameBorder=0></iframe>
 
 #### Scatter plot for `rating` and `calories`
+
 <iframe src="asset/fig4.html" width=600 height=400 frameBorder=0></iframe>
 
-##### From the above four graphs, we did not see any trend between four features and calories, so we could not use log or square root to transform the data. Also, they are continuing numerics values, so we decided not to change these numeric columns in our baseline model. 
+##### From the above four graphs, we did not see any trend between four features and calories, so we could not use log or square root to transform the data. Also, they are continuing numerics values, so we decided not to change these numeric columns in our baseline model.
 
 #### Model Description
 
@@ -214,7 +217,7 @@ Based on our analysis with the data based on the graphs above, we decided to use
 
 All **four features** are **quantitative** values, so there was no necessary encoding required.
 
-For the pipeline for our model, we have sets continuing numeric values. So, we used **Linear Regression** model along with preprocessor we created above. 
+For the pipeline for our model, we have sets continuing numeric values. So, we used **Linear Regression** model along with preprocessor we created above.
 
 #### Performance Report
 
@@ -229,8 +232,8 @@ So, we splited our dataset into training and testing.
     baseline_X_train, baseline_X_test, baseline_y_train, baseline_y_test = train_test_split(baseline_X, baseline_y, test_size=0.2, random_state=1)
 
 The results are followings:
-    **train set RMSE score : 246.07**
-    **test set RMSE score : 245.75**
+**train set RMSE score : 246.07**
+**test set RMSE score : 245.75**
 
 The RMSE scores are high, but there is no extreme difference in between the train set's RMSE and the test set's RMSE. We concluded it does not seem like our model is overfitting to the train data. Our model is able to generalize well.
 
@@ -251,55 +254,52 @@ RMSE score close to zero indicates that the model is accurate in predicting valu
 ##### 1. QuantileTransformer
 
 - We applied `QuantileTransformer()` on the data `sodium` and `sugar`.
-The reason why we applied the quantile transformer is that, for some recipes such as "christmas ham" they use about 4,000 grams of sodium. For both, data sets `sodium` and `sugar` there are outliers which recipes contain amount over 1000 grams. Those could be the outliers which can harm our regression. But, those are still reasonable data, we should not delete them. So, in order to lower the impact of outliers in our dataset we tansformed `sodium` and `sugar`. 
+  The reason why we applied the quantile transformer is that, for some recipes such as "christmas ham" they use about 4,000 grams of sodium. For both, data sets `sodium` and `sugar` there are outliers which recipes contain amount over 1000 grams. Those could be the outliers which can harm our regression. But, those are still reasonable data, we should not delete them. So, in order to lower the impact of outliers in our dataset we tansformed `sodium` and `sugar`.
 
 ##### 2. 5-Fold Cross Validation
 
-- We do not have enough dataset is be a problem, so we decided to add on new features. Multiplying the quantative values could provide improvements in predcition, because some combinations of nutrition could be related to calories. For example, high calories can be predicted when there are large amount of sodium and saturated fat. 10 new features such as 'sugar * rating', 'sugar * sodium', etc were created. 
+- We do not have enough dataset is be a problem, so we decided to add on new features. Multiplying the quantative values could provide improvements in predcition, because some combinations of nutrition could be related to calories. For example, high calories can be predicted when there are large amount of sodium and saturated fat. 10 new features such as 'sugar _ rating', 'sugar _ sodium', etc were created.
 
 - However, adding all the combinatorial features could cause issues. Some information could be redundant or irrelevant. So we created combinations of two features and polynomailFeature and add them on the original dataset we used in baseline model.
-For example, here is the first few columns in our k-fold dataframe
+  For example, here is the first few columns in our k-fold dataframe
 
-    ('sugar * sodium', 'sugar * s_fat', 1),
+      ('sugar * sodium', 'sugar * s_fat', 1),
 
-    ('sugar * sodium', 'sugar * s_fat', 2),
+      ('sugar * sodium', 'sugar * s_fat', 2),
 
-    ('sugar * sodium', 'sugar * s_fat', 3),
+      ('sugar * sodium', 'sugar * s_fat', 3),
 
-    ('sugar * sodium', 'sugar * s_fat', 4),
+      ('sugar * sodium', 'sugar * s_fat', 4),
 
-    ('sugar * sodium', 'sugar * rating', 1),
+      ('sugar * sodium', 'sugar * rating', 1),
 
-    ...
+      ...
 
-    ('sodium * rating', 's_fat * rating', 4)
+      ('sodium * rating', 's_fat * rating', 4)
 
 We will use add these new columns based on our baseline dataframe and using PolynomialFeatures(d) where d is the choice of number of polynomal features.
 
-
-- To decide  which features combination would actually improve our model, we decided to use K-Fold Cross Validation. The reason why we chose K-Fold Cross Validation is firstly to check the whether or not the model have underfitting or overfitting issue(refer to "Unsuccessful Exploration" section below). Secondly, for each hyperparameter choice, we use the validation test set to evaluate our model and making comparsion to decide which hyperparameter choice minimize our **RMSE** score. 
+- To decide which features combination would actually improve our model, we decided to use K-Fold Cross Validation. The reason why we chose K-Fold Cross Validation is firstly to check the whether or not the model have underfitting or overfitting issue(refer to "Unsuccessful Exploration" section below). Secondly, for each hyperparameter choice, we use the validation test set to evaluate our model and making comparsion to decide which hyperparameter choice minimize our **RMSE** score.
 
 - We used 5 folds for cross validation model and got average **RMSE** scores for each Hyperparameter choice. The model with new features of combinations of `sugar * rating` and `sodium * s_fat` and polynomialFeatures is **3** showed the lowest RMSE score with the model based on the validation set.
 
 ##### 3. PolynomialFeatures
 
-- When we look at the graph **Scatter plot for `s_fat`**, there are a lot of non-linear datas along with linear datas. So, we thought that using PolynomialFeatures transfomer for `s_fat` would better fit the model. In order to find the best hyperparameters for PolynomialFeatures transformer, we tried multiple degrees(1 ~ 5). Based on the result from other 5 fold-cross validation, having degree of **3** improved the model the most.  
-
+- When we look at the graph **Scatter plot for `s_fat`**, there are a lot of non-linear datas along with linear datas. So, we thought that using PolynomialFeatures transfomer for `s_fat` would better fit the model. In order to find the best hyperparameters for PolynomialFeatures transformer, we tried multiple degrees(1 ~ 5). Based on the result from our 5 fold-cross validation, having degree of **3** improved the model the most.
 
 #### Final Model Description
 
-The final model is built and improved based on the **Successful Exploration**. 
+The final model is built and improved based on the **Successful Exploration**.
 
 In the baseline model, we thought transforming the quantative datas are not necessary which resulted in bad RMSE score. In order to improve the model, we used **QuantileTransformer** on `sodium` and `sugar` data to generalize outlier datas. (Details in Successful Exploration: 1. QuantileTransformer)
 
-The `s_fat` data had non-linear relationship with `calories`, so we used **PolynomialFeatures** to make data more fit. We tested multiple degrees to find the best hyperparameter and **Degree 3** returned the lowest RMSE score for the model. 
+The `s_fat` data had non-linear relationship with `calories`, so we used **PolynomialFeatures** to make data more fit. We tested multiple degrees to find the best hyperparameter and **Degree 3** returned the lowest RMSE score for the model.
 (Details in Successful Exploration: 3. PolynomialFeatures)
 
 Above two tranformers are included in our preprocessor.
 Then, we used **LinearRegression** with the preprocessor created above.
 
 In order to discover overfitting or underfitting issues and find the best choice for hyperparamter and PolynomialFeature degree to add into model, we used 5-Fold Cross Validation. (Details in Successful Exploration: 3. 5-Fold Cross Validation)
-
 
 #### Unsuccessful Exploration
 
@@ -309,7 +309,7 @@ Grid Search Cross Validation was used to improve the model at first. By default 
 
 Just like how we added the combination of new features in **3. 5-Fold Cross Validation**, we tried the same process with GridSearchCV. We created the combinations of two features each and created the new model for each combination.
 
-The GridSearch Cross Validation has returned that adding a combination of features of **'sugar * s_fat' & 'sodium * rating'** to the model would give the lowest RMSE score. 
+The GridSearch Cross Validation has returned that adding a combination of features of **'sugar _ s_fat' & 'sodium _ rating'** to the model would give the lowest RMSE score.
 
 However, the model created by the GridSearchCV and DecisionTreeRegressor had a critical issue. In order to check whether the model is overfitting or not, we splited the data to training data and testing data.
 
@@ -330,35 +330,36 @@ Before, we get the RMSE score for the final model(refer to the final model from 
 
 So, we splited the data just like how we did in the Baseline model to check the issue.
 
-Followings are the results: 
+Followings are the results:
 
     Training Data's RMSE : 226.7658222939278
     Testing Data's RMSE  : 228.3315816038959
 
 The training data's RMSE score and testing data's RMSE score has not critical difference. They are similar, so it does not seem like the model is overfitting to the training data. The model is able to generalize well.
 
-##### Score Improvement 
+##### Score Improvement
 
 Final Model Performance RMSE Score
 
     228.3315816038959
 
-
-Our baseline model RMSE score was **245.75** and our final model RMSE score is **228.33**. There is a  **17.42** unit improvement in the model. 
+Our baseline model RMSE score was **245.75** and our final model RMSE score is **228.33**. There is a **17.42** unit improvement in the model.
 
 We could improve the final model by using QuantileTransformer, PolynomialFeatures with degree 3, and 5-Fold Cross Validation.
 
 Now we want to check if our model is fair.
 
 ---
+
 # Fairness Analysis 🧐
 
- Wally wonders about the question that Does our model perform worse for recipe groups that contain higher sugar(>= threshold grams) than it does for recipe groups that contain lower sugar(< threshold grams)? So they decide to investgate it. 
+Wally wonders about the question that Does our model perform worse for recipe groups that contain higher sugar(>= threshold grams) than it does for recipe groups that contain lower sugar(< threshold grams)? So they decide to investgate it.
 
 ## Investigate Question: Does our model perform worse for recipe groups that contain higher sugar(>= threshold grams) than it does for recipe groups that contain lower sugar(< threshold grams)?
+
 ---
 
-The first step is to set the threshold of seperating the orginal dataframe into two groups. By looking at the amount of sugar in recipe histogram, Hyunsoo suggest to use 36 grams of sugar as the threshold to seperate the dataframe into two part because according to AHA, a grown adult is not recommanded to intake 36 grams of sugar or more in one day. 
+The first step is to set the threshold of seperating the orginal dataframe into two groups. By looking at the amount of sugar in recipe histogram, Hyunsoo suggest to use 36 grams of sugar as the threshold to seperate the dataframe into two part because according to AHA, a grown adult is not recommanded to intake 36 grams of sugar or more in one day.
 
 The second step is to Binarize the each row to their corresponding group. We achieve this step by the code below.
 
@@ -366,12 +367,16 @@ The second step is to Binarize the each row to their corresponding group. We ach
     sugar_df = pd.concat([useful_df,final_pipeline_df[['sugar * rating', 'sodium * s_fat']]],axis = 1)
     sugar_df["sugar_bin"] = binarizer.transform(sugar_df[['sugar']].values)
 
-Then we are ready to perform permutation test to investigate this question. 
+Then we are ready to perform permutation test to investigate this question.
 
 ## Permutation Test
-#### Null Hypothesis:  
+
+#### Null Hypothesis:
+
 Our model is fair. Its precision for the recipe groups that contain high sugar(>= 36 grams) and recipe groups that contain high sugar(< 36 grams) are roughly the **same**, and any differences are due to random chance.
-#### Alternative Hypothesis: 
+
+#### Alternative Hypothesis:
+
 Our model is unfair. Its precision of recipe groups that contain high sugar(>= 36 grams) and the precision of recipe groups that contain high sugar(< 36 grams) is **different**
 
     Group X : The recipe groups that contain high sugar(>= 36 grams)
@@ -382,16 +387,16 @@ Our model is unfair. Its precision of recipe groups that contain high sugar(>= 3
 
     118.74275614775925
 
-
 #### P-Value
-    
+
     0.0
 
 #### Significance level
-    
+
     0.05
 
 ### Conclusion
+
     P-value(0.0) < 0.05
 
 With the information above, because the pvalue(0) < significance level(0.05), **we rejected** the null hypothesis, indicate that the distribution of recipe groups that contain high sugar(>= 36 grams) and recipe groups that contain high sugar(< 36 grams) are not **same**!
